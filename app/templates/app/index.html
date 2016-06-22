@@ -1,0 +1,131 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+{% if startup_list %}
+<script>
+    var companies = [
+{% for startup in startup_list %}        
+        {
+        name: '{{ startup.name }}',
+        desc: '{{ startup.desc }}',
+        logo: '{{ startup.logo }}',
+        link: '{{ startup.link }}',
+        email: '{{ startup.email }}',
+        founders: [
+  {% for founder in startup.founder_set.all %} 
+    
+        {
+            name: '{{ founder.name}}',
+            title: '{{ founder.title}}',
+            image: '{{ founder.headshot}}'
+        },
+   {% endfor %} 
+        
+        ]
+    },
+
+ {% endfor %}    
+];
+</script>
+        {% else %}
+
+        {% endif %}
+
+
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <div class="mslogo-container">
+            <a href="http://www.microsoft.com/" ><img alt="Microsoft" src="https://assets.onestore.ms/cdnfiles/onestorerolling-1512-09001/shell/v3/images/logo/microsoft.png"></a>
+        </div>
+    </div>
+  </nav>
+
+  <nav data-nav-status="toggle" class="navigation-bar is-hidden navbar navbar-default navbar-interest" role="navigation">
+    <div class="navbar-header">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="row">
+            <div class="col-md-6 col-xs-7 navbar-counter">
+              <p id="counter" class="counter"></p>
+            </div>
+            <div class="col-md-6 col-xs-5 navbar-button">
+              <button data-toggle="modal" data-target="#interest-modal" class="btn btn-default">Next <i class="fa fa-caret-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="featurette fluid-container">
+    <div class="wrapper row">
+
+      <div id="connect-apps" class="container">
+
+        <header>
+          <h1>{{ title }}</h1>
+          <p>Welcome! Please click the buttons below to express interest in one or more startups you met today.</p>
+        </header>
+        <div id="companies" class="row">
+        </div>
+
+        <footer>
+          <p>&copy; 2015 Microsoft</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <div id="interest-modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Thank you for your interest!</h4>
+        </div>
+        <div class="modal-body">
+          <p>You've selected: <span id="modal-companies"></span></p>
+          <p>Please let us know how they can reach you: </p>
+        
+        <form action="." method="post">
+            
+                <input name="investor_name" id="id_investor_name" type="text" placeholder="Your name">
+                <input name="investor_email" id="id_investor_email" type="email" placeholder="Your email">
+                <input name="investor_org" id="id_investor_org" type="text" placeholder="Your organization">
+
+                <input name="investor_companies" id="id_investor_companies" type="hidden">
+
+            <input type="submit" value="Submit">
+        </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div id="thankyou-modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Thank you for reaching out!</h4>
+        </div>
+        <div class="modal-body">
+          <p>Awesome, thank you! Your contact info will be passed over to CEOs.
+           Also feel free to contact <a href="mailto:">@microsoft.com</a> for additional info.</p>
+         </div>
+         <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+{% endblock %}
